@@ -43,7 +43,7 @@ export default function Header() {
           <Link to="/report" className="nav-link">
             사기조회
           </Link>
-          <Link to="/board" className="nav-link">
+          <Link to="/board/list" className="nav-link">
             커뮤니티
           </Link>
           <Link to="/notice" className="nav-link">
@@ -59,7 +59,8 @@ export default function Header() {
             // ✅ 로그인 성공 시: 닉네임과 로그아웃 버튼
             <div className="user-menu">
               <Link
-                to={`/mypage/${loginState.email}`}
+                //to={`/mypage/${loginState.email}`}
+                to={`/mypage`}
                 className="user-nickname"
               >
                 🍯 {loginState.nickname}님

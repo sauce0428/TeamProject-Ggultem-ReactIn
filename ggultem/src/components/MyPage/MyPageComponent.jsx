@@ -114,7 +114,7 @@ const MyPageMain = ({ email }) => {
               <button
                 className="btn-modify-nav"
                 type="button"
-                onClick={() => moveToMyPageModify(email)}
+                onClick={() => moveToMyPageModify()}
               >
                 수정하기
               </button>
