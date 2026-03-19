@@ -112,7 +112,7 @@ const MyPageMain = ({ email }) => {
               </div>
 
               <button
-                className="btn-read btn-modify-nav"
+                className="btn-modify-nav"
                 type="button"
                 onClick={() => moveToMyPageModify(email)}
               >

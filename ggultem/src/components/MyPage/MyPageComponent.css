@@ -118,7 +118,7 @@
   margin: 18px 0 25px;
 }
 
-.user-nickname {
+.name-group .user-nickname {
   font-size: 1.4rem;
   font-weight: 800;
   color: #222;
@@ -159,7 +159,7 @@
 }
 
 /* 수정 버튼 */
-.edit-profile-btn {
+.btn-modify-nav {
   width: 100%;
   padding: 15px;
   background: #222;
@@ -172,7 +172,7 @@
   transition: all 0.2s ease;
 }
 
-.edit-profile-btn:hover {
+.btn-modify-nav:hover {
   background: #000;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
