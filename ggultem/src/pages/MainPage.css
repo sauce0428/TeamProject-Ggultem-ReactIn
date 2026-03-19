@@ -85,7 +85,7 @@
 }
 
 /* ✅ 와이드 카드 메뉴 */
-.content-wrapper-wide {
+.main-container .content-wrapper-wide {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 4열로 넓게 배치 */
   gap: 40px;
@@ -94,7 +94,7 @@
   margin: 0 auto;
 }
 
-.content-card-wide {
+.main-container .content-card-wide {
   text-decoration: none;
   background-color: var(--bg-white);
   border: 2px solid #f1f1f1;
@@ -107,17 +107,17 @@
   gap: 20px;
 }
 
-.content-card-wide:hover {
+.main-container .content-card-wide:hover {
   border-color: var(--honey-color);
   background-color: var(--soft-yellow);
   transform: translateY(-10px);
 }
 
-.content-icon {
+.main-container .content-icon {
   font-size: 60px;
 }
 
-.content-box {
+.main-container .content-box {
   font-size: 24px;
   font-weight: 800;
   color: var(--bee-brown);

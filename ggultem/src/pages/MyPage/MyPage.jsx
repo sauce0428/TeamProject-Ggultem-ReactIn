@@ -3,11 +3,10 @@ import "./MyPage.css"; // CSS 파일 임포트
 import MyPageMain from "../../components/MyPage/MyPageComponent";
 import Header from "../../include/Header";
 import Footer from "../../include/Footer";
-import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const MyPage = () => {
-  const { email } = useParams();
-
+  const email = useSelector((state) => state.loginSlice.email);
   return (
     <div className="mypage-page-wrapper">
       <Header />
