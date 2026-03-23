@@ -9,21 +9,13 @@ export const getOne = async (boardNo) => {
   return res.data;
 };
 
-//등록
+// 등록
 export const addBoard = async (boardObj) => {
-
   const formData = new FormData();
 
   formData.append("title", boardObj.title);
   formData.append("content", boardObj.content);
   formData.append("email", boardObj.email);
-
-  // 파일 추가
-  if (boardObj.files && boardObj.files.length > 0) {
-    boardObj.files.forEach(file => {
-      formData.append("files", file);
-    });
-  }
 
   const res = await axios.post(`${prefix}/`, formData, {
     headers: {
@@ -31,7 +23,29 @@ export const addBoard = async (boardObj) => {
     },
   });
 
-  console.log("등록 결과:", res.data);
+  return res.data;
+};
+
+// 수정
+export const modifyBoard = async (boardNo, boardObj) => {
+
+  const formData = new FormData();
+
+  formData.append("title", boardObj.title);
+  formData.append("content", boardObj.content);
+
+  const res = await axios.put(`${prefix}/${boardNo}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return res.data;
+};
+
+export const removeBoard = async (boardNo) => {
+
+  const res = await axios.put(`${prefix}/remove/${boardNo}`);
 
   return res.data;
 };

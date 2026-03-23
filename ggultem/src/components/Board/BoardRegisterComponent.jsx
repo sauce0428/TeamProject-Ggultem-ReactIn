@@ -54,7 +54,6 @@ const BoardRegisterComponent = () => {
 
       <Editor
         ref={editorRef}
-        initialValue="내용을 입력하세요"
         previewStyle="tab"
         initialEditType="wysiwyg"
         height="400px"
