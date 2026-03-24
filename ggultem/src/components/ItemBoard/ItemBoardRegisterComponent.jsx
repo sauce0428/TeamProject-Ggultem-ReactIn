@@ -58,35 +58,45 @@ const ItemBoardRegister = () => {
   };
 
   const handleClickAdd = () => {
+    // 1. 전송 전 데이터 로그 확인
+    console.log("전송할 이메일:", loginState.email);
+
+    if (!loginState.email) {
+      alert("로그인 정보가 없습니다. 다시 로그인 해주세요.");
+      return;
+    }
+
     const formData = new FormData();
 
-    // 미리보기 상태에 담긴 실제 파일(file)들을 추가
+    // 이미지 추가
     imagePreviews.forEach((imgObj) => {
       formData.append("files", imgObj.file);
     });
 
-    formData.append("email", loginState.email);
+    // 2. DTO 필드명과 일치시키기 (중요)
+    formData.append("email", loginState.email); // 백엔드 ItemBoardDTO의 private String email; 과 매칭
     formData.append("writer", loginState.nickname || loginState.name);
     formData.append("title", item.title);
     formData.append("price", Number(item.price));
     formData.append("content", item.content);
     formData.append("category", item.category);
     formData.append("location", item.location);
+    // status는 서비스에서 강제로 "판매중"을 넣기로 했으므로 여기서 안 보내도 무관함
 
     setFetching(true);
     postAdd(formData)
-      .then(() => {
+      .then((data) => {
         setFetching(false);
-        alert("상품이 등록되었습니다!");
+        alert("등록 완료!");
         navigate("/itemBoard/list");
       })
       .catch((err) => {
         setFetching(false);
-        console.error(err);
+        // 서버에서 보낸 상세 에러 메시지 출력
+        console.error("에러 상세:", err.response?.data);
         alert("등록 중 오류 발생!");
       });
   };
-
   if (!isLogin) return null;
 
   return (
@@ -135,9 +145,9 @@ const ItemBoardRegister = () => {
             <option value="">선택하세요</option>
             <option value="electronics">전자제품</option>
             <option value="clothing">의류</option>
-            <option value="furniture">스포츠</option>
-            <option value="furniture">도서</option>
-            <option value="furniture">건강식품</option>
+            <option value="sports">스포츠</option>
+            <option value="books">도서</option>
+            <option value="health">건강식품</option>
             <option value="furniture">가구</option>
           </select>
         </div>

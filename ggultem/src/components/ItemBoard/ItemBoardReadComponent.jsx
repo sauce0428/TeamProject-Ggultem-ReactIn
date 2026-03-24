@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { getOne, deleteOne, API_SERVER_HOST } from "../../api/ItemBoardApi"; // deleteOne 추가 확인
 import useCustomLogin from "../../hooks/useCustomLogin";
+import ItemBoardReplyComponent from "./ItemBoardReplyComponent";
 import "./ItemBoardReadComponent.css";
 
 const host = API_SERVER_HOST;
@@ -89,8 +90,18 @@ const ItemBoardReadComponent = () => {
         <div className="info-section">
           <div className="info-main">
             <span className="info-category">{item.category}</span>
+            <span
+              className={`status-badge ${String(item.status) ? "sold-out" : "on-sale"}`}
+            >
+              {String(item.status) === "true" ? "판매 완료" : "판매 중"}
+            </span>
             <h1 className="info-title">{item.title}</h1>
             <h2 className="info-price">{item.price?.toLocaleString()}원</h2>
+          </div>
+
+          <div className="detail-row">
+            <span className="label">조회수</span>
+            <span className="value">{item.viewCount || 0}</span>
           </div>
 
           <div className="info-details">
@@ -114,6 +125,7 @@ const ItemBoardReadComponent = () => {
             <span className="label">상품 설명</span>
             <p className="info-content">{item.content}</p>
           </div>
+          <ItemBoardReplyComponent itemId={id} />
 
           {/* 버튼 영역: 본인 확인 조건부 렌더링 */}
           <div className="read-footer-btns">
@@ -130,7 +142,10 @@ const ItemBoardReadComponent = () => {
                 </button>
               </div>
             ) : (
-              <button className="chat-btn">판매자와 채팅하기</button>
+              <>
+                <button className="chat-btn">판매자와 채팅하기</button>
+                <button className="chat-btn">장바구니 담기</button>
+              </>
             )}
           </div>
         </div>
