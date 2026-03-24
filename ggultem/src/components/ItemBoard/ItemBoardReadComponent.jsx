@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { getOne, deleteOne, API_SERVER_HOST } from "../../api/ItemBoardApi"; // deleteOne 추가 확인
 import useCustomLogin from "../../hooks/useCustomLogin";
+import ItemBoardReplyComponent from "./ItemBoardReplyComponent";
 import "./ItemBoardReadComponent.css";
 
 const host = API_SERVER_HOST;
@@ -119,6 +120,7 @@ const ItemBoardReadComponent = () => {
             <span className="label">상품 설명</span>
             <p className="info-content">{item.content}</p>
           </div>
+          <ItemBoardReplyComponent itemId={id} />
 
           {/* 버튼 영역: 본인 확인 조건부 렌더링 */}
           <div className="read-footer-btns">
