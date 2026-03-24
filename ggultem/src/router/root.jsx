@@ -34,7 +34,6 @@ const NoticeModifyAdmin = lazy(
 );
 // * 그룹코드 관리 페이지 */
 // 코드그룹 관련 lazy 로딩
-const CodeGroupIndex = lazy(() => import("../pages/CodeGroup/IndexPage"));
 const CodeGroupList = lazy(() => import("../pages/CodeGroup/ListPage"));
 const CodeGroupAdd = lazy(() => import("../pages/CodeGroup/AddPage"));
 const CodeGroupRead = lazy(() => import("../pages/CodeGroup/ReadPage"));
