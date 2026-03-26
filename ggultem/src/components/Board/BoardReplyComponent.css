@@ -1,0 +1,146 @@
+/* =========================
+   전체 댓글 영역
+========================= */
+.reply-wrapper {
+  margin-top: 30px;
+}
+
+.reply-wrapper h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   댓글 입력
+========================= */
+.reply-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.reply-input textarea {
+  flex: 1;
+  height: 70px;
+  resize: none;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.reply-input button {
+  padding: 10px 16px;
+  background: #f5a623;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.reply-input button:hover {
+  background: #ffb84d;
+}
+
+/* =========================
+   댓글 카드
+========================= */
+.reply-item {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* 작성자 */
+.reply-main strong {
+  font-size: 14px;
+  color: #333;
+}
+
+/* 내용 */
+.reply-main div {
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+/* =========================
+   버튼 줄 정리 ⭐ 핵심
+========================= */
+.reply-main button {
+  margin-top: 8px;
+  margin-right: 6px;
+
+  padding: 5px 10px;
+  font-size: 12px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: #f1f1f1;
+  cursor: pointer;
+}
+
+.reply-main button:hover {
+  background: #ddd;
+}
+
+/* =========================
+   대댓글 입력
+========================= */
+.child-input {
+  margin-top: 10px;
+  margin-left: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.child-input textarea {
+  flex: 1;
+  height: 60px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.child-input button {
+  padding: 6px 10px;
+  background: #f5a623;
+  border: none;
+  border-radius: 8px;
+  color: white;
+}
+
+/* =========================
+   대댓글 카드 ⭐ 핵심
+========================= */
+.child-reply-list {
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
+.child-reply {
+  display: flex;
+  gap: 10px;
+
+  background: #fafafa;
+  border-radius: 10px;
+  padding: 10px;
+
+  margin-bottom: 8px;
+}
+
+.reply-arrow {
+  color: #aaa;
+  margin-top: 3px;
+}
+
+/* =========================
+   삭제된 댓글
+========================= */
+.deleted {
+  color: #aaa;
+  font-style: italic;
+}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getList, API_SERVER_HOST } from "../../api/BoardApi";
+import { getList } from "../../api/BoardApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import PageComponent from "../common/PageComponent";
 import { useNavigate } from "react-router-dom";
@@ -18,70 +18,72 @@ const initState = {
   current: 0,
 };
 
-const host = API_SERVER_HOST;
-
 const BoardList = () => {
+
   const { page, size, keyword, searchType, refresh, moveToBoardList } =
     useCustomMove();
 
   const [serverData, setServerData] = useState(initState);
   const navigate = useNavigate();
 
+  // 🔥 검색 상태
   const [localKeyword, setLocalKeyword] = useState(keyword || "");
-  const [localType, setLocalType] = useState(searchType || "tc");
+  const [localType, setLocalType] = useState(searchType || "all");
 
+  //  검색 버튼
   const handleSearch = (e) => {
     e.preventDefault();
 
-    if (!localKeyword.trim()) {
-      alert("검색어를 입력해주세요.");
-      return;
-    }
+    const cleanKeyword = localKeyword.trim();
 
     moveToBoardList({
       page: 1,
-      keyword: localKeyword,
+      keyword: cleanKeyword === "" ? null : cleanKeyword,
       searchType: localType,
     });
+
+
+    setLocalKeyword("");
   };
 
-
-
-
-
-
+  // 🔥 데이터 조회
   useEffect(() => {
+
+    const cleanKeyword = keyword?.trim();
+
     getList({
       page,
       size,
-      keyword,
+      keyword: cleanKeyword === "" ? null : cleanKeyword,
       searchType,
     }).then((data) => {
-      console.log("서버 데이터:", data);
       setServerData(data);
     });
+
   }, [page, size, keyword, searchType, refresh]);
 
   return (
     <div className="board-list-wrapper">
       <div className="board-list-container">
+
         {/* 헤더 */}
         <div className="board-header">
           <h2 className="board-title">🍯 꿀템 커뮤니티</h2>
           <p className="board-subtitle">
             유용한 정보와 일상을 공유하는 공간입니다.
           </p>
+
+          {/* 🔥 검색 */}
           <form className="search-form" onSubmit={handleSearch}>
             <select
               value={localType}
               onChange={(e) => setLocalType(e.target.value)}
             >
-              <option value="t">제목</option>
-              <option value="c">내용</option>
-              <option value="w">작성자</option>
-              <option value="tc">제목+내용</option>
+              <option value="all">전체</option>
+              <option value="title">제목</option>
+              <option value="content">내용</option>
+              <option value="writer">작성자</option>
             </select>
-
             <input
               type="text"
               value={localKeyword}
@@ -92,7 +94,7 @@ const BoardList = () => {
             <button type="submit">검색</button>
           </form>
 
-
+          {/* 액션 */}
           <div className="board-actions">
             <span className="total-count">
               전체 게시글 {serverData.totalCount}개
@@ -132,14 +134,10 @@ const BoardList = () => {
 
                     <td className="td-title">
                       <div className="title-wrapper">
-
-                        {/*  이미지 여부 표시 */}
                         {board.content && board.content.includes("<img") && (
                           <span className="img-icon">📷</span>
                         )}
-
                         <span className="title-text">{board.title}</span>
-
                       </div>
                     </td>
 
@@ -155,7 +153,9 @@ const BoardList = () => {
               ) : (
                 <tr>
                   <td colSpan="5" className="empty-row">
-                    등록된 게시글이 없습니다.
+                    {keyword
+                      ? "검색 결과가 없습니다."
+                      : "등록된 게시글이 없습니다."}
                   </td>
                 </tr>
               )}
@@ -167,6 +167,7 @@ const BoardList = () => {
         <div className="pagination-wrapper">
           <PageComponent serverData={serverData} movePage={moveToBoardList} />
         </div>
+
       </div>
     </div>
   );

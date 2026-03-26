@@ -25,6 +25,6 @@ export const modifyReply = async (replyNo, content) => {
 
 // 댓글 삭제
 export const removeReply = async (replyNo) => {
-  const res = await axios.get(`${host}/api/reply/${replyNo}`);
+  const res = await axios.put(`${host}/api/reply/${replyNo}/delete`);
   return res.data;
 };

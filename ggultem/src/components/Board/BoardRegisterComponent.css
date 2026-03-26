@@ -1,0 +1,92 @@
+/* =========================
+   전체 레이아웃
+========================= */
+.board-register-wrapper {
+  background: #f9f9f9;
+  min-height: 100vh;
+  padding: 40px 0;
+}
+
+.board-register-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* =========================
+   제목
+========================= */
+.board-register-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 25px;
+}
+
+/* =========================
+   입력 영역
+========================= */
+.board-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 15px;
+  outline: none;
+}
+
+/* 포커스 효과 */
+.board-input:focus {
+  border-color: #f5a623;
+}
+
+/* =========================
+   에디터 영역
+========================= */
+.editor-wrapper {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   버튼 영역
+========================= */
+.board-btn-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* 공통 버튼 */
+.board-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* 등록 버튼 */
+.board-btn-primary {
+  background: #f5a623;
+  color: white;
+}
+
+.board-btn-primary:hover {
+  background: #ffb84d;
+}
+
+/* 취소 버튼 */
+.board-btn-secondary {
+  background: #eee;
+}
+
+.board-btn-secondary:hover {
+  background: #ddd;
+}

@@ -1,15 +1,22 @@
 import axios from "axios";
 
-//서버 주소
+// 서버 주소
 export const API_SERVER_HOST = "http://localhost:8080";
-const prefix = `${API_SERVER_HOST}/board`;
 
+const prefix = `${API_SERVER_HOST}/board`;
+const adminPrefix = `${API_SERVER_HOST}/admin/board`;
+
+// =======================
+// 게시글 조회
+// =======================
 export const getOne = async (boardNo) => {
   const res = await axios.get(`${prefix}/${boardNo}`);
   return res.data;
 };
 
+// =======================
 // 등록
+// =======================
 export const addBoard = async (boardObj) => {
   const formData = new FormData();
 
@@ -26,9 +33,10 @@ export const addBoard = async (boardObj) => {
   return res.data;
 };
 
+// =======================
 // 수정
+// =======================
 export const modifyBoard = async (boardNo, boardObj) => {
-
   const formData = new FormData();
 
   formData.append("title", boardObj.title);
@@ -43,22 +51,54 @@ export const modifyBoard = async (boardNo, boardObj) => {
   return res.data;
 };
 
+// =======================
+// 일반 삭제 (작성자)
+// =======================
 export const removeBoard = async (boardNo) => {
-
   const res = await axios.put(`${prefix}/remove/${boardNo}`);
+  return res.data;
+};
+
+// =======================
+//  관리자 삭제 (핵심)
+// =======================
+export const adminRemoveBoard = async (boardNo) => {
+  const res = await axios.put(`${adminPrefix}/${boardNo}`);
+  return res.data;
+};
+
+// =======================
+// 목록 조회
+// =======================
+export const getList = async (pageParam) => {
+  const { page, size, keyword, searchType } = pageParam;
+
+  const res = await axios.get(`${prefix}/list`, {
+    params: {
+      page,
+      size,
+      keyword,
+      searchType,
+    },
+  });
 
   return res.data;
 };
 
-export const getList = async (pageParam) => {
-  const { page, size, keyword, searchType } = pageParam;
-  const res = await axios.get(`${prefix}/list`, {
+// =======================
+// 관리자 목록
+// =======================
+export const getAdminList = async (pageParam) => {
+  const { page, size, keyword, enabled } = pageParam;
+
+  const res = await axios.get(`${adminPrefix}/list`, {
     params: {
-      page: page,
-      size: size,
-      keyword: keyword,
-      searchType: searchType,
+      page,
+      size,
+      keyword,
+      enabled,
     },
   });
+
   return res.data;
 };

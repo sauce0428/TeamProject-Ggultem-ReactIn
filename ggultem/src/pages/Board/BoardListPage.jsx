@@ -1,4 +1,4 @@
-import "./BoardListPage.css"; // CSS 파일 임포트
+import "./BoardListPage.css";
 import BoardList from "../../components/Board/BoardListComponent";
 import Header from "../../include/Header";
 import Footer from "../../include/Footer";

@@ -22,15 +22,13 @@ const AdminBoardListComponent = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
 
-  //  데이터 로딩
+  // 데이터 로딩
   const loadData = () => {
     const params = {
       page,
       size: 10,
-
-      //  핵심 (댓글이랑 동일)
-      enabled: enabled === "" ? null : Number(enabled),
-      keyword: keyword.trim() === "" ? null : keyword.trim(),
+      enabled: enabled === "" ? undefined : Number(enabled),
+      keyword: keyword.trim() === "" ? undefined : keyword.trim(),
     };
 
     getAdminList(params, token).then((data) => {
@@ -45,6 +43,8 @@ const AdminBoardListComponent = () => {
         nextPage: data?.nextPage || 0,
         current: data?.current || 1,
       });
+    }).catch(err => {
+      console.error("리스트 에러:", err);
     });
   };
 
@@ -52,21 +52,22 @@ const AdminBoardListComponent = () => {
     loadData();
   }, [page]);
 
-  // 🔥 검색
+  // 검색
   const handleSearch = () => {
     setPage(1);
     loadData();
   };
 
-  //  삭제
+  // ⭐ 관리자 삭제 (최종)
   const handleDelete = async (boardNo) => {
     if (!window.confirm("정말 삭제 하시겠습니까?")) return;
 
     try {
-      await deleteBoard(boardNo, token);
+      await deleteBoard(boardNo, token); // ⭐ 여기 중요
       alert("삭제 완료");
       loadData();
-    } catch {
+    } catch (err) {
+      console.error("삭제 에러:", err);
       alert("삭제 실패");
     }
   };
@@ -103,14 +104,12 @@ const AdminBoardListComponent = () => {
         <button onClick={handleSearch}>검색</button>
       </div>
 
-      {/*  데이터 없을 때 */}
       {serverData.dtoList.length === 0 && (
         <div style={{ marginTop: "20px", color: "#888" }}>
           조회된 게시글이 없습니다.
         </div>
       )}
 
-      {/*  리스트 */}
       {serverData.dtoList.map((board) => (
         <div
           key={board.boardNo}
@@ -135,7 +134,6 @@ const AdminBoardListComponent = () => {
         </div>
       ))}
 
-      {/*  페이징 */}
       {serverData.pageNumList.length > 0 && (
         <div className="pagination">
 
