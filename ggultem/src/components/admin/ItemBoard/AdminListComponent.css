@@ -51,6 +51,7 @@
   font-weight: bold;
   cursor: pointer;
   transition: 0.2s;
+  margin: 5px;
 }
 
 .white-btn {
@@ -60,7 +61,6 @@
   padding: 12px 20px;
   border-radius: 8px;
   font-weight: bold;
-  margin-right: 10px;
   cursor: pointer;
 }
 
@@ -283,4 +283,80 @@
   .admin-search-bar input {
     width: 150px;
   }
+}
+
+/* 기본 배지 스타일 */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* 상태 배지 컨테이너 */
+.status-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 5px 10px;
+}
+
+/* 동그란 점 스타일 */
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+  display: inline-block;
+}
+
+/* 활성(판매중) - 녹색 */
+.status-badge.active {
+  color: #2e7d32;
+}
+.status-badge.active .dot {
+  background-color: #4caf50;
+}
+
+/* 판매완료 - 파란색 */
+.status-badge.sold-out {
+  color: #1565c0;
+}
+.status-badge.sold-out .dot {
+  background-color: #2196f3;
+}
+
+/* 삭제됨 - 빨간색 */
+.status-badge.deleted {
+  color: #c62828;
+}
+.status-badge.deleted .dot {
+  background-color: #ef5350;
+}
+
+/* 판매상태 셀렉트 박스만 세련되게 */
+.admin-status-select {
+  padding: 10px 15px;
+  border-radius: 8px; /* 버튼과 비슷한 곡률 */
+  border: 1px solid #ddd;
+  background-color: #fff;
+  font-weight: 600;
+  color: #444;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-right: 5px; /* 버튼과의 간격 */
+}
+
+.admin-status-select:hover {
+  border-color: #ffc107; /* 노란색 포인트와 통일 */
 }

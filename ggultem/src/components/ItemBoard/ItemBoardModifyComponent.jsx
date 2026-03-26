@@ -142,9 +142,9 @@ const ItemBoardModifyComponent = () => {
               <input
                 type="radio"
                 name="status"
-                value={false}
-                checked={item.status === false || item.status === "false"}
-                onChange={() => setItem({ ...item, status: false })}
+                value="판매중"
+                checked={item.status === "판매중"} // 문자열로 비교
+                onChange={() => setItem({ ...item, status: "판매중" })} // 한글 전송
               />{" "}
               판매 중
             </label>
@@ -152,9 +152,9 @@ const ItemBoardModifyComponent = () => {
               <input
                 type="radio"
                 name="status"
-                value={true}
-                checked={item.status === true || item.status === "true"}
-                onChange={() => setItem({ ...item, status: true })}
+                value="판매완료"
+                checked={item.status === "판매완료"} // 문자열로 비교
+                onChange={() => setItem({ ...item, status: "판매완료" })} // 한글 전송
               />{" "}
               판매 완료
             </label>

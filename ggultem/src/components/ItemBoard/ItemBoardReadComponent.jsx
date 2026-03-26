@@ -110,9 +110,9 @@ const ItemBoardReadComponent = () => {
           <div className="info-main">
             <span className="info-category">{item.category}</span>
             <span
-              className={`status-badge ${String(item.status) ? "sold-out" : "on-sale"}`}
+              className={`status-badge ${item.status === "판매완료" ? "sold-out" : "on-sale"}`}
             >
-              {String(item.status) === "true" ? "판매 완료" : "판매 중"}
+              {item.status === "판매완료" ? "판매 완료" : "판매 중"}
             </span>
             <h1 className="info-title">{item.title}</h1>
             <h2 className="info-price">{item.price?.toLocaleString()}원</h2>

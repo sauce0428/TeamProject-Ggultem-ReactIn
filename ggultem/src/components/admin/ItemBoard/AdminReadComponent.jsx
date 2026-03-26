@@ -33,10 +33,12 @@ const AdminReadComponent = () => {
               className="red-btn"
               onClick={() => {
                 if (window.confirm("삭제하시겠습니까?"))
-                  deleteOne(id).then(() => navigate("/admin/itemBoard/list"));
+                  deleteOne(id, "soldOut").then(() =>
+                    navigate("/admin/itemBoard/list"),
+                  );
               }}
             >
-              강제 삭제
+              상품 삭제
             </button>
           </div>
         </div>
