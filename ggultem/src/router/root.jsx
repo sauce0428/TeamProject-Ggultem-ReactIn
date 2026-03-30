@@ -95,6 +95,9 @@ const BusinessBoardModify = lazy(
 const BusinessBoardDList = lazy(
   () => import("../pages/Business/Itemboard/DeleteListPage"),
 );
+const BusinessAdCenter = lazy(
+  () => import("../pages/Business/AdCenter/AdCenterPage"),
+);
 //* 공지사항 lazy */
 const NoticeList = lazy(() => import("../pages/Notice/NoticePage"));
 const NoticeRead = lazy(() => import("../pages/Notice/NoticeRead"));
@@ -588,6 +591,14 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={<Loading />}>
         <BusinessBoardDList />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/business/bizmoney",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <BusinessAdCenter />
       </Suspense>
     ),
   },
