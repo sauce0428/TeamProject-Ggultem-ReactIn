@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux"; // 로그인 정보를 가져오기 위해 추가
 import "./InfoModal.css"; // 기존 스타일 재활용
 
 const ReportModal = ({ show, targetData, callbackFn, submitFn }) => {
+  // 1. 로그인한 사용자의 정보를 리덕스에서 가져옵니다. (slice 명칭 확인 필요)
+  const loginState = useSelector((state) => state.loginSlice);
+
   // targetData: { targetType, targetNo, targetMemberId } 정보를 부모로부터 받음
 
   // usetState 초기값은 빈 문자열로 두어 사용자가 반드시 선택하도록 세팅.
@@ -32,6 +36,7 @@ const ReportModal = ({ show, targetData, callbackFn, submitFn }) => {
 
     // 최종 데이터 전송(이미지파일 포함을 위해 객체 구성하기)
     submitFn({
+      memberEmail: loginState.email, // ⭐ 백엔드 조회를 위해 현재 로그인한 유저의 이메일 추가
       reportType,
       reason: reportType === "기타" ? reason : reportType, // '기타'가 아니면 유형 자체를 사유로 저장
       files,
