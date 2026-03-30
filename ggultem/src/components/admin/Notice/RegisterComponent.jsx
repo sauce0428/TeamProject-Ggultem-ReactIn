@@ -4,43 +4,50 @@ import useCustomMove from "../../../hooks/useCustomMove";
 import "./RegisterComponent.css";
 
 const RegisterComponent = () => {
-  // 1. 초기 상태에 isPinned: 0(일반 공지) 추가
   const [notice, setNotice] = useState({
     title: "",
     content: "",
     isPinned: 0,
   });
 
-  const uploadRef = useRef(); // 파일 선택창 참조
+  const [files, setFiles] = useState([]);
+  const uploadRef = useRef();
   const { moveToAdminNoticeList } = useCustomMove();
 
-  // 2. 입력 핸들러: 일반 텍스트와 체크박스를 구분하여 상태 업데이트
   const handleChangeNotice = (e) => {
     const { name, value, type, checked } = e.target;
-
     setNotice({
       ...notice,
-      // 타입이 checkbox면 checked 여부에 따라 1(활성) 또는 0(일반) 세팅
       [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
     });
   };
 
-  const handleClickAdd = () => {
-    const files = uploadRef.current.files;
-    const formData = new FormData();
+  const handleFileChange = (e) => {
+    // 1. 선택한 파일들을 배열로 변환
+    const selectedFiles = Array.from(e.target.files);
 
-    // 파일 첨부
+    // 2. [수정] 함수형 업데이트를 사용하여 기존 files 배열에 새 파일들을 누적
+    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+
+    // 3. 동일한 파일을 다시 선택해도 이벤트가 발생하도록 input 값 초기화
+    if (uploadRef.current) {
+      uploadRef.current.value = "";
+    }
+  };
+
+  const removeFile = (index) => {
+    setFiles(files.filter((_, i) => i !== index));
+  };
+
+  const handleClickAdd = () => {
+    const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
       formData.append("files", files[i]);
     }
-
-    // 데이터 첨부
     formData.append("title", notice.title);
     formData.append("content", notice.content);
-    formData.append("memberEmail", "admin@honey.com"); // 관리자 계정
-    formData.append("enabled", 1); // 게시글 활성 상태
-
-    // 3. 현재 상태값(0 또는 1)을 서버로 전송
+    formData.append("memberEmail", "admin@honey.com");
+    formData.append("enabled", 1);
     formData.append("isPinned", notice.isPinned);
 
     postAdd(formData)
@@ -49,8 +56,7 @@ const RegisterComponent = () => {
         moveToAdminNoticeList();
       })
       .catch((err) => {
-        console.error("등록 중 에러 발생", err);
-        alert("등록에 실패했습니다. 다시 시도해주세요.");
+        alert("등록에 실패했습니다.");
       });
   };
 
@@ -58,28 +64,23 @@ const RegisterComponent = () => {
     <div className="notice-reg-wrapper">
       <div className="notice-reg-container">
         <h2 className="notice-reg-title">공지사항 등록</h2>
-
         <div className="notice-reg-form">
-          {/* 제목 입력 */}
           <div className="form-group">
             <label>제목</label>
             <input
               className="form-input"
               name="title"
               type="text"
-              placeholder="공지사항 제목을 입력하세요"
               value={notice.title}
               onChange={handleChangeNotice}
             />
           </div>
 
-          {/* 상단 고정 체크박스 영역 */}
           <div className="form-group checkbox-group">
             <label className="checkbox-label">
               <input
                 type="checkbox"
                 name="isPinned"
-                // 1이면 체크된 상태, 0이면 해제된 상태로 동기화
                 checked={notice.isPinned === 1}
                 onChange={handleChangeNotice}
               />
@@ -89,19 +90,16 @@ const RegisterComponent = () => {
             </label>
           </div>
 
-          {/* 내용 입력 */}
           <div className="form-group">
             <label>내용</label>
             <textarea
               className="form-textarea"
               name="content"
-              placeholder="공지사항 내용을 상세히 입력하세요"
               value={notice.content}
               onChange={handleChangeNotice}
             />
           </div>
 
-          {/* 이미지 첨부 */}
           <div className="form-group">
             <label>이미지 첨부</label>
             <input
@@ -110,10 +108,30 @@ const RegisterComponent = () => {
               type="file"
               multiple={true}
               accept="image/*"
+              onChange={handleFileChange}
             />
+            <div className="image-preview-list">
+              {files.map((file, i) => (
+                <div key={i} className="image-preview-item">
+                  {/* ★ 이미지 태그 추가됨 */}
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt="미리보기"
+                    onLoad={(e) => URL.revokeObjectURL(e.target.src)}
+                  />
+                  <div className="file-name-badge">{file.name}</div>
+                  <button
+                    type="button"
+                    className="btn-del"
+                    onClick={() => removeFile(i)}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* 버튼 영역 */}
           <div className="form-actions">
             <button className="cancel-btn" onClick={moveToAdminNoticeList}>
               취소

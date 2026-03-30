@@ -2,8 +2,12 @@ import ListComponent from "../../../components/admin/Notice/ListComponent";
 
 const ListPage = () => {
   return (
-    <div className="p-4 w-full bg-white">
-      <ListComponent />
+    <div className="notice-page-wrapper">
+      <Header />
+      <main className="notice-main-content">
+        <ListComponent />
+      </main>
+      <Footer />
     </div>
   );
 };

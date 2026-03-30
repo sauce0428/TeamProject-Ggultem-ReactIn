@@ -12,34 +12,55 @@ const ModifyComponent = ({ noticeId }) => {
     uploadFileNames: [],
   });
 
+  const [newFiles, setNewFiles] = useState([]);
+  const [delFileNames, setDelFileNames] = useState([]);
   const uploadRef = useRef();
   const { moveToAdminNoticeRead, moveToAdminNoticeList } = useCustomMove();
 
   useEffect(() => {
-    getOne(noticeId).then((data) => {
-      console.log("불러온 데이터:", data);
-      setNotice(data);
-    });
+    getOne(noticeId).then((data) => setNotice(data));
   }, [noticeId]);
 
   const handleChangeNotice = (e) => {
     const { name, value, type, checked } = e.target;
-
     setNotice({
       ...notice,
       [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
     });
   };
 
+  const removeOldImage = (fileName) => {
+    setDelFileNames((prev) => [...prev, fileName]); // 수정: 함수형 업데이트
+    setNotice({
+      ...notice,
+      uploadFileNames: notice.uploadFileNames.filter(
+        (name) => name !== fileName,
+      ),
+    });
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    // setNewFiles도 함수형 업데이트로!
+    setNewFiles((prevNewFiles) => [...prevNewFiles, ...selectedFiles]);
+    uploadRef.current.value = "";
+  };
+
+  const removeNewFile = (index) => {
+    setNewFiles(newFiles.filter((_, i) => i !== index));
+  };
+
   const handleClickModify = () => {
     const formData = new FormData();
+    newFiles.forEach((file) => formData.append("files", file));
 
-    if (uploadRef.current && uploadRef.current.files) {
-      const files = uploadRef.current.files;
-      for (let i = 0; i < files.length; i++) {
-        formData.append("files", files[i]);
-      }
-    }
+    // 수정: 배열을 그대로 보내지 않고 하나씩 append
+    delFileNames.forEach((name) => formData.append("delFileNames", name));
+
+    // 추가: 기존 파일 유지 정보 전달 (핵심)
+    notice.uploadFileNames.forEach((name) =>
+      formData.append("keepFileNames", name),
+    );
 
     formData.append("title", notice.title);
     formData.append("content", notice.content);
@@ -57,9 +78,7 @@ const ModifyComponent = ({ noticeId }) => {
     <div className="notice-modify-wrapper">
       <div className="notice-modify-container">
         <h2 className="notice-modify-title">공지사항 수정 관리</h2>
-
         <div className="notice-modify-form">
-          {/* 제목 입력 */}
           <div className="form-group">
             <label>제목</label>
             <input
@@ -67,11 +86,9 @@ const ModifyComponent = ({ noticeId }) => {
               className="form-input"
               value={notice.title}
               onChange={handleChangeNotice}
-              placeholder="제목을 입력하세요"
             />
           </div>
 
-          {/* 📌 상단 고정 체크박스 (클래스 적용) */}
           <div className="form-group checkbox-group">
             <label className="checkbox-label">
               <input
@@ -84,7 +101,6 @@ const ModifyComponent = ({ noticeId }) => {
             </label>
           </div>
 
-          {/* 내용 입력 */}
           <div className="form-group">
             <label>내용</label>
             <textarea
@@ -92,30 +108,30 @@ const ModifyComponent = ({ noticeId }) => {
               className="form-textarea"
               value={notice.content}
               onChange={handleChangeNotice}
-              placeholder="내용을 입력하세요"
             />
           </div>
 
-          {/* 기존 이미지 미리보기 */}
           <div className="form-group">
-            <label>기존 이미지</label>
+            <label>기존 이미지 (X 클릭 시 삭제)</label>
             <div className="image-preview-list">
-              {notice.uploadFileNames &&
-                notice.uploadFileNames.map((fileName, i) => (
-                  <div key={i} className="image-preview-item">
-                    <img
-                      src={`${API_SERVER_HOST}/admin/notice/view/s_${fileName}`}
-                      alt="기존이미지"
-                      onError={(e) =>
-                        console.log(`${fileName} 이미지 로딩 실패`)
-                      }
-                    />
-                  </div>
-                ))}
+              {notice.uploadFileNames.map((fileName, i) => (
+                <div key={i} className="image-preview-item">
+                  <img
+                    src={`${API_SERVER_HOST}/admin/notice/view/s_${fileName}`}
+                    alt="기존이미지"
+                  />
+                  <button
+                    type="button"
+                    className="btn-del"
+                    onClick={() => removeOldImage(fileName)}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* 새 이미지 추가 */}
           <div className="form-group">
             <label>새 이미지 추가 (선택)</label>
             <input
@@ -123,11 +139,30 @@ const ModifyComponent = ({ noticeId }) => {
               type="file"
               multiple
               className="form-file"
-              accept="image/*"
+              onChange={handleFileChange}
             />
+            <div className="image-preview-list">
+              {newFiles.map((file, i) => (
+                <div key={i} className="image-preview-item">
+                  {/* ★ 새 이미지 미리보기 적용됨 */}
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt="새미리보기"
+                    onLoad={(e) => URL.revokeObjectURL(e.target.src)}
+                  />
+                  <div className="file-name-badge">{file.name}</div>
+                  <button
+                    type="button"
+                    className="btn-del"
+                    onClick={() => removeNewFile(i)}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* 버튼 그룹 */}
           <div className="form-actions">
             <button className="cancel-btn" onClick={moveToAdminNoticeList}>
               목록으로
