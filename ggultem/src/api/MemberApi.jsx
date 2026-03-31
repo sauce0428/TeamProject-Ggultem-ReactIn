@@ -76,3 +76,8 @@ export const uploadImageApi = async (email, formData) => {
   });
   return res.data;
 };
+
+export const removeMember = async (email) => {
+  const res = await axios.put(`${host}/mypage/remove/${email}`);
+  return res.data;
+};

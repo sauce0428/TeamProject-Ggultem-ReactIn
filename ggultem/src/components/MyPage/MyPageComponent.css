@@ -238,6 +238,27 @@
 .mp-btn-modify-nav {
   width: 100%;
   padding: 15px;
+  background: #ff8c00;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 10px;
+}
+
+.mp-btn-modify-nav:hover {
+  background: #ff8c00;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 삭제 버튼 */
+.mp-btn-remove-nav {
+  width: 100%;
+  padding: 15px;
   background: #222;
   color: #fff;
   border: none;
@@ -248,7 +269,7 @@
   transition: all 0.2s ease;
 }
 
-.mp-btn-modify-nav:hover {
+.mp-btn-remove-nav:hover {
   background: #000;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);

@@ -91,9 +91,9 @@
     transition: background 0.2s;
     cursor: pointer;
 }
-
-.member-tr:hover {
-    background-color: #fff9e6; /* 꿀템 색상 강조 */
+/* 행 호버 효과 */
+.member-table tbody tr:hover {
+  background-color: #fffdf5;
 }
 
 .member-table td {
@@ -103,33 +103,22 @@
     text-align: center;
 }
 
-/* 배지 및 상태 표시 */
-.nickname-badge {
-    font-weight: bold;
-    color: #2c3e50;
+/* 뱃지 스타일 */
+.type-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: bold;
 }
+.type-badge.charge { background: #e8f5e9; color: #2e7d32; } /* 초록빛 충전 */
+.type-badge.spend { background: #fff3e0; color: #ef6c00; }  /* 주황빛 지출 */
 
-.social-badge {
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
+/* 금액 색상 */
+.amount-cell.plus { color: #2ecc71; font-weight: 700; }
+.amount-cell.minus { color: #e74c3c; font-weight: 700; }
 
-.social-badge.admin { background: #fe0000; color: #ffffff; }
-.social-badge.kakao { background: #fee500; color: #3c1e1e; }
-.social-badge.general { background: #e0e0e0; color: #666; }
-
-.status-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-right: 8px;
-}
-
-.status-dot.active { background-color: #4caf50; }
-.status-dot.inactive { background-color: #f44336; }
+.balance-cell { color: #999; font-size: 0.85rem; }
+.date-cell { color: #666; }
 
 .empty-list {
     text-align: center;
