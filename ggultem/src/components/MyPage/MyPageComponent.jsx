@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { getMyInfo, API_SERVER_HOST } from "../../api/MemberApi";
+import React, { useCallback, useEffect, useState } from "react";
+import { getMyInfo, API_SERVER_HOST, removeMember } from "../../api/MemberApi";
 import { useLocation, useNavigate } from "react-router";
 import { getList as getItemList } from "../../api/ItemBoardApi";
 import useCustomMove from "../../hooks/useCustomMove";
+import useCustomLogin from "../../hooks/useCustomLogin";
 import PageComponent from "../common/PageComponent";
 import "./MyPageComponent.css";
 import axios from "axios";
@@ -25,6 +26,7 @@ const MyPageMain = ({ email }) => {
   const [member, setMember] = useState(initState);
   const navigate = useNavigate();
   const location = useLocation();
+  const { doLogout } = useCustomLogin();
   const { moveToMyPageModify } = useCustomMove();
   const [itemPage, setItemPage] = useState(1); // 상품용 페이지
   const [cartPage, setCartPage] = useState(1); // 장바구니용 페이지
@@ -45,7 +47,7 @@ const MyPageMain = ({ email }) => {
     next: false,
   });
 
-  const getAllData = () => {
+  const getAllData = useCallback(() => {
     if (!email) return;
 
     // 회원 정보 로드
@@ -64,7 +66,7 @@ const MyPageMain = ({ email }) => {
       .then((res) => {
         setCartData(res.data);
       });
-  };
+  }, [email, itemPage, cartPage]);
 
   // 2. 통합 useEffect
   useEffect(() => {
@@ -79,7 +81,7 @@ const MyPageMain = ({ email }) => {
     }
 
     // location.key를 넣어 페이지 이동(뒤로가기 포함) 시 매번 체크하도록 설정
-  }, [email, itemPage, cartPage, location.key]);
+  }, [getAllData, location.state?.refresh, location.key]);
 
   const moveItemPage = (pageParam) => {
     setItemPage(pageParam.page);
@@ -88,6 +90,33 @@ const MyPageMain = ({ email }) => {
   // 장바구니 페이지 변경 (필요할 경우)
   const moveCartPage = (pageParam) => {
     setCartPage(pageParam.page);
+  };
+
+  const removeHandler = (email) => {
+    // 1. ✨ confirm을 사용하여 사용자가 '취소'를 누를 수 있게 합니다.
+    if (
+      !window.confirm(
+        "정말 회원 탈퇴를 하시겠습니까?\n탈퇴 시 모든 정보가 삭제되며 복구할 수 없습니다.",
+      )
+    ) {
+      return; // 취소를 누르면 함수 종료
+    }
+
+    // 2. 서버 통신 시작
+    removeMember(email)
+      .then(() => {
+        alert("회원 탈퇴에 성공하였습니다. 그동안 이용해 주셔서 감사합니다.");
+
+        // 3. 보안을 위해 로그아웃 함수를 호출하여 상태를 비워줍니다.
+        doLogout();
+
+        // 4. 메인으로 이동 (replace: true로 뒤로가기 방지)
+        navigate("/", { replace: true });
+      })
+      .catch((error) => {
+        console.error("탈퇴 오류:", error);
+        alert("탈퇴 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+      });
   };
 
   if (!member)
@@ -258,6 +287,13 @@ const MyPageMain = ({ email }) => {
                 onClick={() => moveToMyPageModify()}
               >
                 수정하기
+              </button>
+              <button
+                className="mp-btn-remove-nav"
+                type="button"
+                onClick={() => removeHandler(member.email)}
+              >
+                회원탈퇴
               </button>
             </div>
           </div>

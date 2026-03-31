@@ -101,6 +101,18 @@
   box-shadow: 0 10px 20px rgba(255, 217, 0, 0.3);
 }
 
+.sign_up_btn {
+   color: #222;
+   font-size: 1.1rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.sign_up_btn:hover {
+  color: #977400;
+}
+
 /* 소셜 로그인 섹션 공통 */
 .social-login-container {
   margin-top: 40px;

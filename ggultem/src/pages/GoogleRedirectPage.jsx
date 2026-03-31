@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../slice/loginSlice"; // 기존 로그인 액션 활용
 import { getAccessToken } from "../api/GoogleApi"; // 새로 만들 API
@@ -12,6 +12,7 @@ const GoogleRedirectPage = () => {
   const dispatch = useDispatch();
   const { moveToPath } = useCustomLogin();
   const isProcessing = useRef(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (authCode) {
@@ -32,14 +33,27 @@ const GoogleRedirectPage = () => {
           }
         })
         .catch((err) => {
-          console.error("로그인 처리 중 에러 발생:", err);
-          alert("로그인에 실패했습니다.");
+          console.error("로그인 에러 상세:", err);
+
+          // 서버에서 ResponseEntity로 보냈다면 data.error에 담겨옵니다.
+          const errorStatus = err.response?.data?.error;
+
+          if (errorStatus === "DELETED_USER") {
+            alert("탈퇴한 계정입니다. 재가입은 고객센터에 문의해주세요. 🐝");
+            navigate("/", { replace: true });
+          } else if (errorStatus === "STOP_USER") {
+            alert("정지된 계정입니다. 고객센터에 문의해주세요.");
+            navigate("/", { replace: true });
+          } else {
+            alert("로그인 중 오류가 발생했습니다.");
+            navigate("/login", { replace: true });
+          }
         })
         .finally(() => {
-          // 두 번 실행 방지
+          isProcessing.current = false;
         });
     }
-  }, [authCode, dispatch, moveToPath]);
+  }, [authCode, dispatch, moveToPath, navigate]);
 
   return (
     <div className="google-loading-wrapper">

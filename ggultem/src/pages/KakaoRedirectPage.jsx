@@ -32,10 +32,25 @@ const KakaoRedirectPage = () => {
           }
         })
         .catch((err) => {
-          console.error("로그인 처리 중 에러 발생:", err);
-          alert("로그인에 실패했습니다.");
+          console.error("로그인 에러 상세:", err);
+
+          // 서버에서 ResponseEntity로 보냈다면 data.error에 담겨옵니다.
+          const errorStatus = err.response?.data?.error;
+
+          if (errorStatus === "DELETED_USER") {
+            alert("탈퇴한 계정입니다. 재가입은 고객센터에 문의해주세요.");
+            navigate("/", { replace: true });
+          } else if (errorStatus === "STOP_USER") {
+            alert("정지된 계정입니다. 고객센터에 문의해주세요.");
+            navigate("/", { replace: true });
+          } else {
+            alert("로그인 중 오류가 발생했습니다.");
+            navigate("/login", { replace: true });
+          }
         })
-        .finally(() => {});
+        .finally(() => {
+          isProcessing.current = false;
+        });
     }
   }, [authCode, dispatch, navigate, moveToPath]);
 

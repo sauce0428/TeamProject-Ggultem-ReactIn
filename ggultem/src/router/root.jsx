@@ -72,6 +72,7 @@ const BlackListRead = lazy(() => import("../pages/admin/BlackList/ReadPage"));
 //* 사용자 페이지 ================================================================================================================ */
 const Main = lazy(() => import("../pages/MainPage"));
 const Login = lazy(() => import("../pages/LoginPage"));
+const SignUp = lazy(() => import("../pages/Member/RegisterPage"));
 const KakaoRedirect = lazy(() => import("../pages/KakaoRedirectPage"));
 const GoogleRedirect = lazy(() => import("../pages/GoogleRedirectPage"));
 //chat ========================================================
@@ -428,6 +429,14 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={<Loading />}>
         <ChatRoomList />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/member/register",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <SignUp />
       </Suspense>
     ),
   },

@@ -59,3 +59,17 @@ export const postAdd = async (formData) => {
   });
   return res.data;
 };
+
+export const checkEmail = async (email) => {
+  const res = await axios.get(`${host}/admin/member/checkEmail`, {
+    params: { email },
+  });
+  return res.data;
+};
+
+export const checkNickname = async (nickname) => {
+  const res = await axios.get(`${host}/admin/member/checkNickname`, {
+    params: { nickname },
+  });
+  return res.data;
+};
