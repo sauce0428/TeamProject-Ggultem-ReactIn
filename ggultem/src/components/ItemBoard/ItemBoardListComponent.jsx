@@ -52,11 +52,21 @@ const ItemBoardList = () => {
 
   const handleSearch = (e) => {
     if (e) e.preventDefault();
+
+    const type = document.getElementById("itemSearchType").value;
+    const inputElement = document.getElementById("itemSearchKeyword");
+    const word = inputElement.value.trim();
+
     const params = new URLSearchParams(searchParams);
     params.set("page", "1");
-    params.set("searchType", searchState.type);
-    params.set("keyword", searchState.word.trim());
+    params.set("searchType", type);
+    params.set("keyword", word);
+
+    // 검색 실행 후 URL 이동
     navigate(`/itemBoard/list?${params.toString()}`);
+
+    // ★ 입력창 초기화
+    inputElement.value = "";
   };
 
   return (
@@ -68,12 +78,9 @@ const ItemBoardList = () => {
       <div className="search-area-center">
         <form className="search-form-wide" onSubmit={handleSearch}>
           <select
-            name="type"
+            id="itemSearchType"
             className="search-type-select"
-            value={searchState.type}
-            onChange={(e) =>
-              setSearchState({ ...searchState, type: e.target.value })
-            }
+            defaultValue={searchType} // searchState 대신 defaultValue 사용
           >
             <option value="all">전체조건</option>
             <option value="title">상품명</option>
@@ -81,12 +88,10 @@ const ItemBoardList = () => {
           </select>
           <input
             type="text"
+            id="itemSearchKeyword"
             className="search-input-wide"
-            value={searchState.word}
-            onChange={(e) =>
-              setSearchState({ ...searchState, word: e.target.value })
-            }
             placeholder="어떤 꿀템을 찾으시나요?"
+            defaultValue={""} // 초기값 비움
           />
           <button type="submit" className="search-btn-wide">
             검색
