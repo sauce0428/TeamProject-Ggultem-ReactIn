@@ -20,7 +20,7 @@ const BoardReadComponent = ({ boardNo }) => {
   const { showModal, setShowModal, sendReport } = useReport();
 
   // 로그인 정보
-  const loginState = useSelector(state => state.loginSlice);
+  const loginState = useSelector((state) => state.loginSlice);
   const email = loginState?.email;
 
   // 삭제
@@ -55,13 +55,17 @@ const BoardReadComponent = ({ boardNo }) => {
   return (
     <div className="board-read-wrapper">
       <div className="board-read-container">
-
         {/* 상단 제목 */}
         <div className="read-header">
           <h2 className="read-title">{board.title}</h2>
           <div className="read-info">
-            <span>작성자: <strong>{board.writer}</strong></span>
+            <span>
+              작성자: <strong>{board.writer}</strong>
+            </span>
             <span>조회수: {board.viewCount}</span>
+            <button onClick={() => setShowModal(true)} className="btn-report">
+              🚨 신고하기
+            </button>
           </div>
         </div>
 
@@ -73,21 +77,12 @@ const BoardReadComponent = ({ boardNo }) => {
           />
         </div>
 
-        {/* 🔥 신고 버튼 추가 */}
-        <div style={{ marginTop: "10px" }}>
-          <button onClick={() => setShowModal(true)} className="btn-report">
-            🚨 신고하기
-          </button>
-        </div>
-
         {/* 댓글 */}
         <BoardReplyComponent boardNo={boardNo} />
 
         {/* 버튼 */}
         <div className="read-actions">
-          <button onClick={() => navigate("/board/list")}>
-            목록으로
-          </button>
+          <button onClick={() => navigate("/board/list")}>목록으로</button>
 
           {email === board.email && (
             <button onClick={() => navigate(`/board/modify/${board.boardNo}`)}>
@@ -96,9 +91,7 @@ const BoardReadComponent = ({ boardNo }) => {
           )}
 
           {email === board.email && (
-            <button onClick={handleDelete}>
-              삭제
-            </button>
+            <button onClick={handleDelete}>삭제</button>
           )}
         </div>
 
@@ -109,7 +102,6 @@ const BoardReadComponent = ({ boardNo }) => {
           callbackFn={() => setShowModal(false)}
           submitFn={sendReport}
         />
-
       </div>
     </div>
   );
