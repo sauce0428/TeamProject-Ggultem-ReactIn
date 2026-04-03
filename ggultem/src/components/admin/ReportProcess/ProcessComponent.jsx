@@ -58,7 +58,7 @@ const ProcessComponent = ({ reportId, onComplete }) => {
             })
           }
         >
-          <option value={0}>조치 없음 (반려)</option>
+          <option value={1}>조치 없음 (반려)</option>
           <option value={2}>7일 정지</option>
           <option value={3}>30일 정지</option>
           <option value={4}>영구 정지</option>

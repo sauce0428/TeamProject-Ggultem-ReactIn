@@ -129,3 +129,37 @@
         font-size: 14px;
     }
 }
+
+/* 🔥 신고하기 버튼 스타일 추가 */
+.btn-report {
+    background: none;
+    border: none;
+    color: #888; /* 기본은 차분한 회색 */
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    margin-left: auto; /* 우측 정렬 유지 */
+}
+
+.btn-report:hover {
+    color: #ff5252; /* 호버 시 경고 레드 */
+    background-color: #fff5f5; /* 아주 연한 핑크 배경 */
+    transform: translateY(-1px); /* 지훈 님 표준 모션 살짝 가미 */
+}
+
+.btn-report:active {
+    transform: translateY(0);
+}
+
+/* 게시글 본문과 댓글 사이 정렬 보정 */
+.report-btn-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 1px dashed #f1f1f1; /* 댓글 영역과 구분선 */
+}

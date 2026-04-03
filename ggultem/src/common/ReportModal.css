@@ -72,7 +72,7 @@
   margin-bottom: -5px;
 }
 
-/* 셀렉트 박스 & 텍스트 영역 */
+/* ✅ 폼 요소 공통 수정 (box-sizing 추가가 핵심!) */
 .report-form select, 
 .report-form textarea, 
 .report-form input[type="file"] {
@@ -83,16 +83,34 @@
   font-size: 0.95rem;
   outline: none;
   transition: border-color 0.2s;
+  /* 🚩 핵심: 패딩과 테두리를 너비에 포함시켜 박스 탈출 방지 */
+  box-sizing: border-box; 
+  background-color: #fff;
 }
 
-.report-form select:focus, 
-.report-form textarea:focus {
-  border-color: #ffb700;
+/* ✅ 파일 인풋 전용 디테일 수정 */
+.report-form input[type="file"] {
+  padding: 10px; /* 파일 인풋은 패딩을 살짝 줄이는 게 예뻐요 */
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #666;
 }
 
-.report-form textarea {
-  min-height: 100px;
-  resize: none;
+/* 🚩 파일 선택 버튼(브라우저 기본 버튼) 커스텀 스타일링 */
+.report-form input[type="file"]::file-selector-button {
+  background-color: #3f2e1b;
+  color: #ffb700;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.report-form input[type="file"]::file-selector-button:hover {
+  filter: brightness(1.2);
 }
 
 /* ✅ 5. 푸터 버튼 영역 */
